@@ -19,6 +19,12 @@ const Home = (props) => {
   const [data, setData] = React.useState([]);
   const [keys, setKeys] = React.useState([]);
 
+  const set1 = React.useMemo(() => data.slice(0, data.length / 2), [data]);
+  const set2 = React.useMemo(
+    () => data.slice(data.length / 2, data.length - 1),
+    [data]
+  );
+
   const fetchData = () => {
     fetch(
       "https://docs.google.com/spreadsheets/d/1jVeewIxtQZAhzibGCnt7IG4ylCMuke78KwWZRb_k9Mo/gviz/tq?&sheet=Sheet1&tq=select *"
@@ -178,37 +184,40 @@ const Home = (props) => {
         </Typography>
         <Grid container xs={12} spacing={3}>
           {data?.length > 0 ? (
-            data?.map((row, index) => (
-              <Grid
-                item
-                onClick={() =>
-                  props?.setScreen({
-                    screenType: "details",
-                    data: { keys, row },
-                  })
-                }
-              >
-                <Card>
-                  <div style={{ display: "flex" }}>
-                    <CardMedia
-                      component="img"
-                      height="140"
-                      image={row.image}
-                      alt="green iguana"
-                    />
-                    <div>
-                      <Typography variant="h6">{row?.["Full Name"]}</Typography>
-                      <Typography variant="body2">
-                        {row?.["Current Position"]}
-                      </Typography>
-                    </div>
-                  </div>
-                  <CardContent>
-                    <Typography variant="h6">{row?.["Full Name"]}</Typography>
-                  </CardContent>
-                </Card>
-              </Grid>
-            ))
+            <div className="list">
+              <div>
+                {set1?.map((row) => (
+                  <Typography
+                    variant="body2"
+                    onClick={() =>
+                      props.setScreen({
+                        screenType: "details",
+                        data: { keys, row },
+                      })
+                    }
+                    style={{ cursor: "pointer" }}
+                  >
+                    {row?.["Full Name"]}
+                  </Typography>
+                ))}
+              </div>
+              <div>
+                {set2?.map((row) => (
+                  <Typography
+                    variant="body2"
+                    onClick={() =>
+                      props.setScreen({
+                        screenType: "details",
+                        data: { keys, row },
+                      })
+                    }
+                    style={{ cursor: "pointer" }}
+                  >
+                    {row?.["Full Name"]}
+                  </Typography>
+                ))}
+              </div>
+            </div>
           ) : (
             <LinearProgress />
           )}

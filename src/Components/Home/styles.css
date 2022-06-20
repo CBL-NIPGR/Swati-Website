@@ -167,3 +167,10 @@ color: #ffffff;
 .cardSection{
     margin:30px
 }
+
+.list{
+    margin-top: 10px;
+    display: flex;
+    justify-content: space-between;
+
+}
